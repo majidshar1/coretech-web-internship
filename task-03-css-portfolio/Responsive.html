@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Majid Hussain - Portfolio</title>
+    
+    <!-- CSS yahan se shuru ho raha hai -->
+    <style>
+        /* Basic Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f9f9f9;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Header & Nav (Flexbox) */
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        header h1 {
+            font-size: 1.5rem;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            color: #3498db;
+        }
+
+        /* Sections */
+        section {
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        #hero {
+            background-color: #ecf0f1;
+            padding: 5rem 2rem;
+        }
+
+        #hero h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #2c3e50;
+        }
+
+        /* Cards using Flexbox */
+        .card-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            width: 300px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card h3 {
+            color: #3498db;
+            margin-bottom: 10px;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 1rem;
+            background-color: #2c3e50;
+            color: white;
+            margin-top: 2rem;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+            nav ul {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .card {
+                width: 100%;
+            }
+        }
+    </style>
+    <!-- CSS yahan khatam ho gaya -->
+
+</head>
+<body>
+
+    <header>
+        <h1>Majid Hussain</h1>
+        <nav>
+            <ul>
+                <li><a href="#hero">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#projects">Projects</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="hero">
+        <h2>Welcome to My Portfolio</h2>
+        <p>I am a Software Engineering student passionate about web development, digital design, and AI content creation.</p>
+    </section>
+
+    <section id="about">
+        <h2>About Me & Education</h2>
+        <p>Pursuing Software Engineering at Quaid-e-Awam University of Engineering, Science & Technology (QUEST).</p>
+    </section>
+
+    <section id="skills">
+        <h2>My Skills</h2>
+        <div class="card-container">
+            <div class="card">
+                <h3>Web Development</h3>
+                <p>HTML, CSS, Basic Programming, VS Code, GitHub</p>
+            </div>
+            <div class="card">
+                <h3>Digital Design & AI</h3>
+                <p>Figma, Canva, AI Image/Video Generation</p>
+            </div>
+            <div class="card">
+                <h3>Tech & Management</h3>
+                <p>Software Quality Engineering, Domain Management</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects">
+        <h2>Projects</h2>
+        <div class="card-container">
+            <div class="card">
+                <h3>Digital Content</h3>
+                <p>Contributor on Adobe Stock and Shutterstock.</p>
+            </div>
+            <div class="card">
+                <h3>Local Business</h3>
+                <p>Managed Google Business Profile for rental service.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 Majid Hussain. Built for CoreTech Innovations.</p>
+    </footer>
+
+</body>
+</html>
