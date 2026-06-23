@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 5 - JavaScript Form Validation</title>
+    <style>
+        /* CSS for Form Styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .form-container {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+        .form-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .form-group textarea {
+            resize: vertical;
+            height: 100px;
+        }
+        .error {
+            color: red;
+            font-size: 0.85em;
+            margin-top: 5px;
+            display: none;
+        }
+        .success-msg {
+            color: green;
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 15px;
+            display: none;
+            background-color: #e6ffe6;
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #b3ffb3;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #2c3e50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #1a252f;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="form-container">
+        <h2>Contact Us</h2>
+        
+        <!-- Success Message -->
+        <div id="successMessage" class="success-msg">Form submitted successfully!</div>
+        
+        <form id="contactForm">
+            <div class="form-group">
+                <label for="fullName">Full Name</label>
+                <input type="text" id="fullName" placeholder="Enter your full name">
+                <div id="nameError" class="error">Full Name is required.</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="text" id="email" placeholder="Enter your email">
+                <div id="emailError" class="error">Please enter a valid email address.</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input type="text" id="phone" placeholder="Enter your phone number">
+                <div id="phoneError" class="error">Phone number must be at least 10 digits.</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="message">Message</label>
+                <textarea id="message" placeholder="Enter your message (min 20 characters)"></textarea>
+                <div id="messageError" class="error">Message must be at least 20 characters long.</div>
+            </div>
+            
+            <button type="submit">Submit Form</button>
+        </form>
+    </div>
+
+    <!-- JavaScript for Form Validation -->
+    <script>
+        document.getElementById('contactForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Page reload hone se rokega
+
+            // Values nikalna
+            const name = document.getElementById('fullName').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const message = document.getElementById('message').value.trim();
+
+            // Error Elements pakarna
+            const nameErr = document.getElementById('nameError');
+            const emailErr = document.getElementById('emailError');
+            const phoneErr = document.getElementById('phoneError');
+            const messageErr = document.getElementById('messageError');
+            const successMsg = document.getElementById('successMessage');
+
+            let isValid = true;
+
+            // Pehle saare errors ko hide kar do
+            nameErr.style.display = 'none';
+            emailErr.style.display = 'none';
+            phoneErr.style.display = 'none';
+            messageErr.style.display = 'none';
+            successMsg.style.display = 'none';
+
+            // 1. Name Validation (Khali na ho)
+            if (name === '') {
+                nameErr.style.display = 'block';
+                isValid = false;
+            }
+
+            // 2. Email Validation (Sahi format ho)
+            const emailPattern = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;
+            if (email === '' || !emailPattern.test(email)) {
+                emailErr.style.display = 'block';
+                isValid = false;
+            }
+
+            // 3. Phone Validation (Kam az kam 10 digits)
+            const digitsOnly = phone.replace(/\\D/g, ''); // Sirf numbers count karega
+            if (phone === '' || digitsOnly.length < 10) {
+                phoneErr.style.display = 'block';
+                isValid = false;
+            }
+
+            // 4. Message Validation (Kam az kam 20 characters)
+            if (message === '' || message.length < 20) {
+                messageErr.style.display = 'block';
+                isValid = false;
+            }
+
+            // Agar sab theek hai (Success)
+            if (isValid) {
+                successMsg.style.display = 'block';
+                document.getElementById('contactForm').reset(); // Form clear kar dega
+            }
+        });
+    </script>
+</body>
+</html>
