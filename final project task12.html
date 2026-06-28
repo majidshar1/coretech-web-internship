@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CoreTech Innovations – Smart Software Solutions</title>
+  <style>
+    /* ── TOKENS ─────────────────────────────────────────────── */
+    :root {
+      --navy:   #0D1B2A;
+      --blue:   #1565C0;
+      --sky:    #42A5F5;
+      --accent: #00E5FF;
+      --white:  #FFFFFF;
+      --light:  #F0F6FF;
+      --muted:  #607080;
+      --card:   #FFFFFF;
+      --border: #D0DEEE;
+      --radius: 12px;
+      --shadow: 0 4px 24px rgba(21,101,192,.12);
+      --trans:  .25s ease;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Segoe UI', system-ui, sans-serif; color: var(--navy); background: var(--white); }
+
+    /* ── NAVBAR ──────────────────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; width: 100%; z-index: 999;
+      background: rgba(13,27,42,.95); backdrop-filter: blur(10px);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 6%; height: 64px; border-bottom: 1px solid rgba(255,255,255,.07);
+    }
+    .nav-logo { color: var(--white); font-size: 1.3rem; font-weight: 700; letter-spacing: -.5px; }
+    .nav-logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 28px; list-style: none; }
+    .nav-links a { color: rgba(255,255,255,.8); text-decoration: none; font-size: .92rem; font-weight: 500; transition: color var(--trans); }
+    .nav-links a:hover { color: var(--accent); }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+    .hamburger span { width: 24px; height: 2px; background: var(--white); border-radius: 2px; transition: var(--trans); }
+    #nav-toggle { display: none; }
+
+    /* ── HERO ────────────────────────────────────────────────── */
+    #home {
+      min-height: 100vh; display: flex; align-items: center;
+      background: linear-gradient(135deg, var(--navy) 0%, #0a2540 55%, #0d3060 100%);
+      padding: 100px 6% 60px; position: relative; overflow: hidden;
+    }
+    #home::before {
+      content: ''; position: absolute; top: -200px; right: -200px;
+      width: 600px; height: 600px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(0,229,255,.12) 0%, transparent 70%);
+      animation: pulse 6s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%,100%{transform:scale(1);opacity:.7} 50%{transform:scale(1.1);opacity:1} }
+    .hero-inner { max-width: 680px; position: relative; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(0,229,255,.12); border: 1px solid rgba(0,229,255,.3);
+      color: var(--accent); font-size: .8rem; font-weight: 600; letter-spacing: .06em;
+      padding: 6px 16px; border-radius: 100px; margin-bottom: 28px; text-transform: uppercase;
+    }
+    .hero-badge::before { content: '●'; font-size: .6rem; animation: blink 1.5s infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.2} }
+    h1 { color: var(--white); font-size: clamp(2.2rem,5vw,3.6rem); line-height: 1.15; font-weight: 800; margin-bottom: 22px; }
+    h1 span { color: var(--accent); }
+    .hero-desc { color: rgba(255,255,255,.7); font-size: 1.08rem; line-height: 1.75; margin-bottom: 36px; max-width: 520px; }
+    .btn-group { display: flex; gap: 14px; flex-wrap: wrap; }
+    .btn {
+      padding: 13px 28px; border-radius: 8px; font-size: .95rem; font-weight: 600;
+      cursor: pointer; border: none; text-decoration: none; transition: var(--trans); display: inline-block;
+    }
+    .btn-primary { background: var(--accent); color: var(--navy); }
+    .btn-primary:hover { background: #00d0e8; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,229,255,.35); }
+    .btn-outline { background: transparent; border: 2px solid rgba(255,255,255,.35); color: var(--white); }
+    .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+    .hero-stats { display: flex; gap: 40px; margin-top: 52px; flex-wrap: wrap; }
+    .stat { }
+    .stat-num { color: var(--accent); font-size: 2rem; font-weight: 800; line-height: 1; }
+    .stat-lbl { color: rgba(255,255,255,.55); font-size: .82rem; margin-top: 4px; }
+
+    /* ── SECTIONS SHARED ──────────────────────────────────────── */
+    section { padding: 90px 6%; }
+    .section-label { color: var(--blue); font-size: .78rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; margin-bottom: 12px; }
+    .section-title { font-size: clamp(1.7rem,3.5vw,2.4rem); font-weight: 800; line-height: 1.2; color: var(--navy); margin-bottom: 16px; }
+    .section-sub { color: var(--muted); font-size: 1rem; line-height: 1.7; max-width: 560px; }
+    .section-header { margin-bottom: 52px; }
+
+    /* ── SERVICES ────────────────────────────────────────────── */
+    #services { background: var(--light); }
+    .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; }
+    .service-card {
+      background: var(--white); border-radius: var(--radius); padding: 32px 28px;
+      box-shadow: var(--shadow); border: 1px solid var(--border);
+      transition: var(--trans); cursor: default;
+    }
+    .service-card:hover { transform: translateY(-6px); box-shadow: 0 12px 36px rgba(21,101,192,.18); border-color: var(--sky); }
+    .svc-icon { width: 52px; height: 52px; border-radius: 12px; background: linear-gradient(135deg,var(--blue),var(--sky)); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 20px; }
+    .service-card h3 { font-size: 1.08rem; font-weight: 700; margin-bottom: 10px; color: var(--navy); }
+    .service-card p { font-size: .9rem; color: var(--muted); line-height: 1.65; }
+
+    /* ── PROJECTS ────────────────────────────────────────────── */
+    #projects { background: var(--white); }
+    .filter-bar { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 36px; }
+    .filter-btn {
+      padding: 7px 20px; border-radius: 100px; border: 1.5px solid var(--border);
+      background: transparent; font-size: .85rem; font-weight: 600; color: var(--muted);
+      cursor: pointer; transition: var(--trans);
+    }
+    .filter-btn.active, .filter-btn:hover { background: var(--blue); color: var(--white); border-color: var(--blue); }
+    .search-wrap { position: relative; margin-bottom: 28px; }
+    .search-wrap input {
+      width: 100%; max-width: 420px; padding: 11px 18px 11px 44px;
+      border: 1.5px solid var(--border); border-radius: 8px; font-size: .92rem;
+      color: var(--navy); outline: none; transition: var(--trans);
+    }
+    .search-wrap input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(21,101,192,.1); }
+    .search-icon { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 1rem; }
+    .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; }
+    .project-card {
+      border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow);
+      border: 1px solid var(--border); transition: var(--trans);
+    }
+    .project-card:hover { transform: translateY(-5px); box-shadow: 0 14px 40px rgba(21,101,192,.2); }
+    .proj-thumb {
+      height: 160px; display: flex; align-items: center; justify-content: center;
+      font-size: 3rem; position: relative; overflow: hidden;
+    }
+    .proj-body { padding: 20px 22px 24px; }
+    .proj-tag {
+      display: inline-block; padding: 3px 12px; border-radius: 100px;
+      font-size: .74rem; font-weight: 700; margin-bottom: 10px; text-transform: uppercase; letter-spacing: .05em;
+    }
+    .proj-body h3 { font-size: 1rem; font-weight: 700; margin-bottom: 8px; color: var(--navy); }
+    .proj-body p { font-size: .875rem; color: var(--muted); line-height: 1.6; margin-bottom: 14px; }
+    .proj-link { font-size: .85rem; font-weight: 600; color: var(--blue); text-decoration: none; display: inline-flex; align-items: center; gap: 5px; }
+    .proj-link:hover { color: var(--sky); }
+    .no-results { grid-column: 1/-1; text-align: center; padding: 60px 20px; color: var(--muted); font-size: 1rem; }
+
+    /* ── ABOUT ───────────────────────────────────────────────── */
+    #about { background: var(--light); }
+    .about-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+    .about-visual {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%);
+      border-radius: 16px; padding: 48px 36px; color: var(--white); position: relative; overflow: hidden;
+    }
+    .about-visual::before {
+      content: ''; position: absolute; top: -80px; right: -80px;
+      width: 260px; height: 260px; border-radius: 50%;
+      background: rgba(0,229,255,.1);
+    }
+    .av-item { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; position: relative; }
+    .av-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+    .av-item p { font-size: .95rem; opacity: .9; }
+    .about-text .section-sub { margin-bottom: 24px; }
+    .skills-list { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+    .skill-pill {
+      padding: 6px 16px; background: var(--white); border: 1.5px solid var(--border);
+      border-radius: 100px; font-size: .82rem; font-weight: 600; color: var(--blue);
+    }
+
+    /* ── CONTACT ─────────────────────────────────────────────── */
+    #contact { background: var(--white); }
+    .contact-inner { display: grid; grid-template-columns: 1fr 1.4fr; gap: 60px; }
+    .contact-info { }
+    .contact-info .section-sub { margin-bottom: 32px; }
+    .contact-item { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 22px; }
+    .c-icon { width: 42px; height: 42px; background: var(--light); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
+    .c-text strong { display: block; font-size: .88rem; color: var(--navy); margin-bottom: 2px; }
+    .c-text span { font-size: .85rem; color: var(--muted); }
+
+    /* ── FORM ────────────────────────────────────────────────── */
+    .contact-form { background: var(--light); border-radius: var(--radius); padding: 36px 32px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-group { margin-bottom: 18px; }
+    .form-group label { display: block; font-size: .83rem; font-weight: 600; color: var(--navy); margin-bottom: 7px; }
+    .form-group input, .form-group textarea, .form-group select {
+      width: 100%; padding: 11px 14px; border: 1.5px solid var(--border); border-radius: 8px;
+      font-size: .92rem; color: var(--navy); background: var(--white); outline: none; transition: var(--trans);
+      font-family: inherit;
+    }
+    .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+      border-color: var(--blue); box-shadow: 0 0 0 3px rgba(21,101,192,.1);
+    }
+    .form-group input.error, .form-group textarea.error, .form-group select.error {
+      border-color: #E53935;
+    }
+    .field-error { font-size: .78rem; color: #E53935; margin-top: 5px; display: none; }
+    .field-error.show { display: block; }
+    .form-group textarea { resize: vertical; min-height: 110px; }
+    .form-success {
+      display: none; background: #E8F5E9; border: 1.5px solid #66BB6A;
+      border-radius: 8px; padding: 14px 18px; color: #2E7D32;
+      font-size: .9rem; font-weight: 600; margin-top: 14px; text-align: center;
+    }
+    .form-success.show { display: block; }
+    .btn-submit { width: 100%; padding: 14px; background: var(--blue); color: var(--white); border: none; border-radius: 8px; font-size: .95rem; font-weight: 700; cursor: pointer; transition: var(--trans); }
+    .btn-submit:hover { background: #0d47a1; transform: translateY(-1px); }
+
+    /* ── FOOTER ──────────────────────────────────────────────── */
+    footer {
+      background: var(--navy); color: rgba(255,255,255,.6);
+      text-align: center; padding: 28px 6%; font-size: .85rem;
+      border-top: 1px solid rgba(255,255,255,.07);
+    }
+    footer strong { color: var(--accent); }
+
+    /* ── RESPONSIVE ──────────────────────────────────────────── */
+    @media (max-width: 768px) {
+      .nav-links { display: none; flex-direction: column; position: absolute; top: 64px; left: 0; width: 100%; background: rgba(13,27,42,.98); padding: 16px 6% 24px; gap: 16px; }
+      #nav-toggle:checked ~ .nav-links { display: flex; }
+      .hamburger { display: flex; }
+      .about-inner, .contact-inner { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      .hero-stats { gap: 24px; }
+    }
+    @media (max-width: 480px) {
+      section { padding: 60px 5%; }
+      .contact-form { padding: 24px 18px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── NAVBAR ─────────────────────────────────────────────────── -->
+<nav>
+  <div class="nav-logo">Core<span>Tech</span></div>
+  <input type="checkbox" id="nav-toggle" />
+  <label for="nav-toggle" class="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </label>
+  <ul class="nav-links">
+    <li><a href="#home">Home</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- ── HERO ───────────────────────────────────────────────────── -->
+<section id="home">
+  <div class="hero-inner">
+    <div class="hero-badge">🚀 Innovative Software Solutions</div>
+    <h1>Building <span>Smarter</span> Digital Experiences</h1>
+    <p class="hero-desc">CoreTech Innovations delivers cutting-edge web applications, AI-powered tools, and enterprise software that transforms how businesses operate and grow.</p>
+    <div class="btn-group">
+      <a href="#projects" class="btn btn-primary">View Our Work</a>
+      <a href="#contact" class="btn btn-outline">Get In Touch</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><div class="stat-num">120+</div><div class="stat-lbl">Projects Delivered</div></div>
+      <div class="stat"><div class="stat-num">85+</div><div class="stat-lbl">Happy Clients</div></div>
+      <div class="stat"><div class="stat-num">6+</div><div class="stat-lbl">Years Experience</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SERVICES ───────────────────────────────────────────────── -->
+<section id="services">
+  <div class="section-header">
+    <p class="section-label">What We Do</p>
+    <h2 class="section-title">Our Core Services</h2>
+    <p class="section-sub">From concept to deployment, we cover the full spectrum of modern software development with a focus on quality and performance.</p>
+  </div>
+  <div class="services-grid">
+    <div class="service-card">
+      <div class="svc-icon">🌐</div>
+      <h3>Web Development</h3>
+      <p>Responsive, high-performance websites and web apps built with modern frameworks including React, Laravel, and Next.js.</p>
+    </div>
+    <div class="service-card">
+      <div class="svc-icon">📱</div>
+      <h3>Mobile Applications</h3>
+      <p>Cross-platform mobile apps for iOS and Android using Flutter and React Native, optimized for speed and UX.</p>
+    </div>
+    <div class="service-card">
+      <div class="svc-icon">🤖</div>
+      <h3>AI & Automation</h3>
+      <p>Smart automation solutions, chatbots, and AI integrations that streamline operations and boost productivity.</p>
+    </div>
+    <div class="service-card">
+      <div class="svc-icon">🛒</div>
+      <h3>E-Commerce Solutions</h3>
+      <p>Scalable online stores with secure payment gateways, inventory management, and conversion-focused design.</p>
+    </div>
+    <div class="service-card">
+      <div class="svc-icon">☁️</div>
+      <h3>Cloud & DevOps</h3>
+      <p>AWS, GCP, and Azure deployments with CI/CD pipelines, container orchestration, and 99.9% uptime guarantees.</p>
+    </div>
+    <div class="service-card">
+      <div class="svc-icon">🔒</div>
+      <h3>Cybersecurity</h3>
+      <p>Security audits, penetration testing, and implementation of best-practice protections for web platforms.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── PROJECTS ────────────────────────────────────────────────── -->
+<section id="projects">
+  <div class="section-header">
+    <p class="section-label">Our Portfolio</p>
+    <h2 class="section-title">Featured Projects</h2>
+    <p class="section-sub">A selection of our recent work across various industries and technologies.</p>
+  </div>
+
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input type="text" id="project-search" placeholder="Search projects…" oninput="filterProjects()" />
+  </div>
+
+  <div class="filter-bar" id="filter-bar">
+    <button class="filter-btn active" onclick="setFilter('all',this)">All</button>
+    <button class="filter-btn" onclick="setFilter('web',this)">Web</button>
+    <button class="filter-btn" onclick="setFilter('mobile',this)">Mobile</button>
+    <button class="filter-btn" onclick="setFilter('ai',this)">AI</button>
+    <button class="filter-btn" onclick="setFilter('ecommerce',this)">E-Commerce</button>
+  </div>
+
+  <div class="projects-grid" id="projects-grid"></div>
+</section>
+
+<!-- ── ABOUT ───────────────────────────────────────────────────── -->
+<section id="about">
+  <div class="about-inner">
+    <div class="about-visual">
+      <h3 style="font-size:1.4rem;margin-bottom:28px;font-weight:700;">Why CoreTech?</h3>
+      <div class="av-item"><div class="av-dot"></div><p>Client-first approach with transparent communication</p></div>
+      <div class="av-item"><div class="av-dot"></div><p>Agile development with 2-week sprint cycles</p></div>
+      <div class="av-item"><div class="av-dot"></div><p>Post-launch support and maintenance included</p></div>
+      <div class="av-item"><div class="av-dot"></div><p>Strict code reviews and quality assurance</p></div>
+      <div class="av-item"><div class="av-dot"></div><p>On-time delivery — 97% project success rate</p></div>
+    </div>
+    <div class="about-text">
+      <p class="section-label">About Us</p>
+      <h2 class="section-title">Passionate About Clean Code &amp; Real Results</h2>
+      <p class="section-sub">Founded in 2018, CoreTech Innovations is a team of 30+ developers, designers, and strategists dedicated to delivering software that makes a difference. We believe technology should solve real problems — not create new ones.</p>
+      <p class="section-sub" style="margin-top:14px;">Our engineers stay at the cutting edge through continuous learning, open-source contribution, and close collaboration with clients at every stage of the build.</p>
+      <div class="skills-list">
+        <span class="skill-pill">React</span>
+        <span class="skill-pill">Laravel</span>
+        <span class="skill-pill">Node.js</span>
+        <span class="skill-pill">Python</span>
+        <span class="skill-pill">Flutter</span>
+        <span class="skill-pill">AWS</span>
+        <span class="skill-pill">Docker</span>
+        <span class="skill-pill">PostgreSQL</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CONTACT ─────────────────────────────────────────────────── -->
+<section id="contact">
+  <div class="section-header">
+    <p class="section-label">Get In Touch</p>
+    <h2 class="section-title">Let's Build Something Great</h2>
+    <p class="section-sub">Ready to start your project? Fill out the form and our team will get back to you within 24 hours.</p>
+  </div>
+  <div class="contact-inner">
+    <div class="contact-info">
+      <div class="contact-item">
+        <div class="c-icon">📍</div>
+        <div class="c-text"><strong>Address</strong><span>42 Innovation Drive, Tech Hub, Karachi, Pakistan</span></div>
+      </div>
+      <div class="contact-item">
+        <div class="c-icon">📧</div>
+        <div class="c-text"><strong>Email</strong><span>hello@coretech.io</span></div>
+      </div>
+      <div class="contact-item">
+        <div class="c-icon">📞</div>
+        <div class="c-text"><strong>Phone</strong><span>+92 300 1234567</span></div>
+      </div>
+      <div class="contact-item">
+        <div class="c-icon">🕐</div>
+        <div class="c-text"><strong>Working Hours</strong><span>Mon – Fri, 9:00 AM – 6:00 PM PKT</span></div>
+      </div>
+    </div>
+
+    <div class="contact-form">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="fname">First Name *</label>
+          <input type="text" id="fname" placeholder="Ahmed" />
+          <div class="field-error" id="err-fname">Please enter your first name.</div>
+        </div>
+        <div class="form-group">
+          <label for="lname">Last Name *</label>
+          <input type="text" id="lname" placeholder="Khan" />
+          <div class="field-error" id="err-lname">Please enter your last name.</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="email">Email Address *</label>
+        <input type="email" id="email" placeholder="ahmed@example.com" />
+        <div class="field-error" id="err-email">Please enter a valid email address.</div>
+      </div>
+      <div class="form-group">
+        <label for="phone">Phone Number</label>
+        <input type="tel" id="phone" placeholder="+92 300 0000000" />
+        <div class="field-error" id="err-phone">Please enter a valid phone number.</div>
+      </div>
+      <div class="form-group">
+        <label for="service">Service Required *</label>
+        <select id="service">
+          <option value="">— Select a service —</option>
+          <option value="web">Web Development</option>
+          <option value="mobile">Mobile App</option>
+          <option value="ai">AI & Automation</option>
+          <option value="ecommerce">E-Commerce</option>
+          <option value="cloud">Cloud & DevOps</option>
+          <option value="security">Cybersecurity</option>
+          <option value="other">Other</option>
+        </select>
+        <div class="field-error" id="err-service">Please select a service.</div>
+      </div>
+      <div class="form-group">
+        <label for="message">Message *</label>
+        <textarea id="message" placeholder="Tell us about your project…"></textarea>
+        <div class="field-error" id="err-message">Message must be at least 20 characters.</div>
+      </div>
+      <button class="btn-submit" onclick="submitForm()">Send Message →</button>
+      <div class="form-success" id="form-success">✅ Message sent successfully! We'll reply within 24 hours.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ──────────────────────────────────────────────────── -->
+<footer>
+  <p>&copy; 2026 <strong>CoreTech Innovations</strong>. All rights reserved. Built with ❤️ by the CoreTech Team.</p>
+</footer>
+
+<script>
+  /* ── PROJECT DATA ────────────────────────────────────────────── */
+  const PROJECTS = [
+    { id:1, title:'MediSync EHR Platform', category:'web', tag:'Web', color:'#1565C0', icon:'🏥',
+      desc:'A HIPAA-compliant Electronic Health Record system with real-time patient dashboards and appointment scheduling.' },
+    { id:2, title:'ShopNow Mobile App', category:'mobile', tag:'Mobile', color:'#6A1B9A', icon:'🛍️',
+      desc:'React Native e-commerce app with AR product preview, push notifications, and Stripe checkout integration.' },
+    { id:3, title:'TalentAI Recruiter', category:'ai', tag:'AI', color:'#00796B', icon:'🤖',
+      desc:'Machine learning-powered CV screening tool that shortlists candidates in seconds with 94% accuracy.' },
+    { id:4, title:'BazaarPlus Marketplace', category:'ecommerce', tag:'E-Commerce', color:'#E65100', icon:'🛒',
+      desc:'Multi-vendor marketplace handling 50,000+ daily transactions with vendor analytics and fraud detection.' },
+    { id:5, title:'EduTrack LMS', category:'web', tag:'Web', color:'#1565C0', icon:'📚',
+      desc:'Learning management system with live classes, quizzes, progress tracking, and certificate generation.' },
+    { id:6, title:'FinBot Assistant', category:'ai', tag:'AI', color:'#00796B', icon:'💹',
+      desc:'Conversational AI for personal finance — budgeting, expense tracking, and investment suggestions.' },
+    { id:7, title:'RideX Driver App', category:'mobile', tag:'Mobile', color:'#6A1B9A', icon:'🚗',
+      desc:'Driver-side app for ride-hailing platform with real-time GPS, earnings tracker, and surge pricing display.' },
+    { id:8, title:'VaultShop WooCommerce', category:'ecommerce', tag:'E-Commerce', color:'#E65100', icon:'💎',
+      desc:'Custom WooCommerce store with headless architecture, serving 200K monthly visitors with 99.9% uptime.' },
+  ];
+
+  const TAG_COLORS = {
+    'Web':        { bg:'#E3F2FD', text:'#1565C0' },
+    'Mobile':     { bg:'#F3E5F5', text:'#6A1B9A' },
+    'AI':         { bg:'#E0F2F1', text:'#00796B' },
+    'E-Commerce': { bg:'#FFF3E0', text:'#E65100' },
+  };
+
+  let activeFilter = 'all';
+
+  function renderProjects(list) {
+    const grid = document.getElementById('projects-grid');
+    if (!list.length) {
+      grid.innerHTML = '<div class="no-results">No projects found. Try a different search term.</div>';
+      return;
+    }
+    grid.innerHTML = list.map(p => {
+      const tc = TAG_COLORS[p.tag] || { bg:'#eee', text:'#333' };
+      return `
+        <div class="project-card" data-category="${p.category}">
+          <div class="proj-thumb" style="background:linear-gradient(135deg,${p.color}22,${p.color}44)">${p.icon}</div>
+          <div class="proj-body">
+            <span class="proj-tag" style="background:${tc.bg};color:${tc.text}">${p.tag}</span>
+            <h3>${p.title}</h3>
+            <p>${p.desc}</p>
+            <a href="#contact" class="proj-link">Start a similar project →</a>
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  function setFilter(cat, btn) {
+    activeFilter = cat;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    filterProjects();
+  }
+
+  function filterProjects() {
+    const q = document.getElementById('project-search').value.toLowerCase().trim();
+    let list = PROJECTS;
+    if (activeFilter !== 'all') list = list.filter(p => p.category === activeFilter);
+    if (q) list = list.filter(p => p.title.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q));
+    renderProjects(list);
+
+    /* Save search to LocalStorage */
+    try { localStorage.setItem('ct_last_search', q); } catch(e){}
+  }
+
+  /* ── FORM VALIDATION ─────────────────────────────────────────── */
+  function validateField(id, condition, errId) {
+    const el = document.getElementById(id);
+    const err = document.getElementById(errId);
+    if (!condition(el.value.trim())) {
+      el.classList.add('error'); err.classList.add('show'); return false;
+    }
+    el.classList.remove('error'); err.classList.remove('show'); return true;
+  }
+
+  function submitForm() {
+    const emailRx = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const phoneRx = /^[+\d\s\-()]{7,15}$/;
+    const phone = document.getElementById('phone').value.trim();
+
+    let ok = true;
+    ok = validateField('fname', v => v.length >= 2, 'err-fname') && ok;
+    ok = validateField('lname', v => v.length >= 2, 'err-lname') && ok;
+    ok = validateField('email', v => emailRx.test(v), 'err-email') && ok;
+    ok = validateField('service', v => v !== '', 'err-service') && ok;
+    ok = validateField('message', v => v.length >= 20, 'err-message') && ok;
+
+    /* Phone is optional but if filled must be valid */
+    if (phone && !phoneRx.test(phone)) {
+      document.getElementById('phone').classList.add('error');
+      document.getElementById('err-phone').classList.add('show');
+      ok = false;
+    } else {
+      document.getElementById('phone').classList.remove('error');
+      document.getElementById('err-phone').classList.remove('show');
+    }
+
+    if (!ok) return;
+
+    /* Save to LocalStorage */
+    const submission = {
+      name: document.getElementById('fname').value.trim() + ' ' + document.getElementById('lname').value.trim(),
+      email: document.getElementById('email').value.trim(),
+      service: document.getElementById('service').value,
+      message: document.getElementById('message').value.trim(),
+      timestamp: new Date().toISOString()
+    };
+    try {
+      const prev = JSON.parse(localStorage.getItem('ct_submissions') || '[]');
+      prev.push(submission);
+      localStorage.setItem('ct_submissions', JSON.stringify(prev));
+    } catch(e){}
+
+    /* Reset form */
+    ['fname','lname','email','phone','message'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('service').value = '';
+    document.getElementById('form-success').classList.add('show');
+    setTimeout(() => document.getElementById('form-success').classList.remove('show'), 5000);
+  }
+
+  /* ── INIT ────────────────────────────────────────────────────── */
+  window.addEventListener('DOMContentLoaded', () => {
+    renderProjects(PROJECTS);
+    /* Restore last search from LocalStorage */
+    try {
+      const last = localStorage.getItem('ct_last_search');
+      if (last) { document.getElementById('project-search').value = last; filterProjects(); }
+    } catch(e){}
+  });
+</script>
+</body>
+</html>
